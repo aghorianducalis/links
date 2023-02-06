@@ -5,23 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Link extends Model
+class Category extends Model
 {
     use HasFactory;
 
-    protected $table = 'links';
+    protected $table = 'categories';
 
     protected $fillable = [
-        'url',
+        'name',
     ];
 
     /**
-     * The categories that are related to the link.
+     * The links that are related to the category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function categories()
+    public function links()
     {
-        return $this->belongsToMany(Category::class, 'category_link', 'link_id', 'category_id');
+        return $this->belongsToMany(Link::class, 'category_link', 'category_id', 'link_id');
     }
 }

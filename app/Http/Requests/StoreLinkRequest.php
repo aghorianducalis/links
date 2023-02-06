@@ -24,13 +24,22 @@ class StoreLinkRequest extends FormRequest
     public function rules()
     {
         return [
+
             'url' => [
                 'required',
+                'url',
                 'min:1',
                 'max:255',
-                'url',
                 'unique:links,url',
             ],
+
+            'category_id' => [
+                'required',
+                'integer',
+                'min:0',
+                'exists:categories,id',
+            ],
+
         ];
     }
 }

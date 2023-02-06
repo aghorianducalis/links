@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
+use App\Models\Category;
 use App\Models\Link;
 
 class LinkController extends Controller
@@ -13,7 +14,9 @@ class LinkController extends Controller
      */
     public function home()
     {
-        return view('welcome');
+        $categories = Category::query()->get();
+
+        return view('welcome', compact('categories'));
     }
 
     /**
@@ -44,13 +47,16 @@ class LinkController extends Controller
      */
     public function store(StoreLinkRequest $request)
     {
+        /** @var Link $link */
         $link = Link::create($request->validated());
-        dd(
-            123,
-            $request->all(),
-            $request->validated(),
-            $link,
-        );
+        $link->categories()->sync([$request->category_id]);
+//        dd(
+//            123,
+//            $request->all(),
+//            $request->validated(),
+//            $request->category_id,
+//            $link,
+//        );
     }
 
     /**

@@ -67,6 +67,23 @@
                     <div class="form-group">
                         <label for="url">Url</label>
                         <input type="url" max="1000" class="form-control" aria-label="Url" id="url" name="url" value="{{ old('url') }}" required>
+                        @error('url')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select name="category_id" id="category" required>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected="selected" @endif>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-outline-primary" id="button">Save</button>
