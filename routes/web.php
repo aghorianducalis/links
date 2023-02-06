@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LinkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LinkController::class, 'home'])->name('home');
+
+Route::namespace('links')
+    /*->middleware('')*/
+    ->name('links')
+    ->prefix('links')
+    ->as('links.')
+    ->group(function () {
+//        Route::get('/', [LinkController::class, 'index'])->name('index');
+        Route::post('/', [LinkController::class, 'store'])->name('store');
+    });
