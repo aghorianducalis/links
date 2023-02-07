@@ -28,6 +28,8 @@ class CategorySeeder extends Seeder
             'math',
             'it',
             'games',
+            'chrome',
+            'android',
 //            '',
         ];
 
