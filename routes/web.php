@@ -24,4 +24,5 @@ Route::namespace('links')
     ->group(function () {
 //        Route::get('/', [LinkController::class, 'index'])->name('index');
         Route::post('/', [LinkController::class, 'store'])->name('store');
+//        Route::get('/{id}', [LinkController::class, 'show'])->name('show');
     });

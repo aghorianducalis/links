@@ -51,6 +51,12 @@
                     Link
                 </div>
 
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -75,6 +81,7 @@
                     <div class="form-group">
                         <label for="category">Category</label>
                         <select name="category_id" id="category" required>
+{{--                            <option value="" selected="selected">+++</option>--}}
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected="selected" @endif>
                                     {{ $category->name }}

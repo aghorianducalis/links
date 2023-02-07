@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLinkRequest;
 use App\Http\Requests\UpdateLinkRequest;
 use App\Models\Category;
 use App\Models\Link;
+use Illuminate\Http\Request;
 
 class LinkController extends Controller
 {
@@ -43,29 +44,27 @@ class LinkController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreLinkRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreLinkRequest $request)
     {
         /** @var Link $link */
         $link = Link::create($request->validated());
         $link->categories()->sync([$request->category_id]);
-//        dd(
-//            123,
-//            $request->all(),
-//            $request->validated(),
-//            $request->category_id,
-//            $link,
-//        );
+
+        return back()->withInput()->with('status', 'Link created!');
+//        return to_route('route.name', ['id' => $link->id]);
+//        return redirect()->route('route.name', [$link])->with('status', 'Link created!');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Link  $link
+     * @param  \Illuminate\Http\Request  $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Link $link)
+    public function show(Request $request, $id)
     {
         //
     }
