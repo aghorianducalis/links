@@ -15,8 +15,9 @@ class SourceSeeder extends Seeder
     public function run()
     {
         $names = [
-            'chrome',
-            'android',
+            'chrome', // tabs
+            'android', // tabs
+            'chrome bookmarks',
 //            '',
         ];
 

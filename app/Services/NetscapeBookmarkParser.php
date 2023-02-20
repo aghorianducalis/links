@@ -3,11 +3,33 @@
 namespace App\Services;
 
 /**
- * @source "kafene/netscape-bookmark-parser": "^0.0.1"
+ * @package "kafene/netscape-bookmark-parser": "^0.0.1"
  * @link https://github.com/kafene/netscape-bookmark-parser
  */
 class NetscapeBookmarkParser
 {
+    private function example_use()
+    {
+        $parser = new NetscapeBookmarkParser();
+
+        // file name
+        $fileName = '/backups/bookmarks_2_20_23.html';
+
+        // read the file
+        $content = $parser->parseFile($fileName);
+
+        /*
+         * Get the link info
+         */
+
+        foreach ($content as $bookmark) {
+            $uri = $bookmark['uri'];
+            $title = $bookmark['title'];
+            $original_time = $bookmark['time'];
+            $tags = $bookmark['tags'];
+        }
+    }
+
     protected $keepNestedTags;
     protected $defaultTags;
     protected $defaultPub;
@@ -69,6 +91,7 @@ class NetscapeBookmarkParser
      *                 [time]  => 1459371397
      *                 [title] => Some page
      *                 [uri]   => http://domain.tld:5678/some-page.html
+     *                 [icon]  => ICON="data:image/png;base64,..." // todo parse ICON
      *             )
      *         [1] => Array
      *             (

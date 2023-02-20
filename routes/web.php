@@ -22,7 +22,7 @@ Route::namespace('links')
     ->prefix('links')
     ->as('links.')
     ->group(function () {
-//        Route::get('/', [LinkController::class, 'index'])->name('index');
+        Route::get('/', [LinkController::class, 'index'])->name('index');
         Route::post('/', [LinkController::class, 'store'])->name('store');
 //        Route::get('/{id}', [LinkController::class, 'show'])->name('show');
     });
