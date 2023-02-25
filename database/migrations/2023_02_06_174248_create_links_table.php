@@ -16,6 +16,9 @@ class CreateLinksTable extends Migration
         Schema::create('links', function (Blueprint $table) {
             $table->id();
             $table->string('url');
+            $table->string('title')->nullable();
+            $table->text('icon')->nullable();
+            $table->timestamp('added_at')->nullable();
             $table->timestamps();
         });
     }

@@ -30,13 +30,35 @@ class CategorySeeder extends Seeder
             'games',
             'chrome',
             'android',
-//            '',
+            'docker',
+            'dou.ua',
+            'evolution redis',
+            'git',
+            'laravel',
+            'laravel tags',
+            'laravel selectize',
+            'laravel eloquent',
+            'laravel datatables',
+            'laravel package development',
+            'laravel composer',
+            'laravel media library',
+            'laravel auth',
+            'music',
+            'self projects',
+            'social',
+            'software ubuntu',
+            'software jetbrains',
+            'software',
+            'ssl',
+            'smartphone_tabs',
         ];
 
         foreach ($names as $name) {
-            $category = Category::create([
-                'name' => $name,
-            ]);
+            $category = Category::query()
+                ->where('name', 'like', "%$name%")
+                ->firstOrCreate([
+                    'name' => $name,
+                ]);
         }
     }
 }

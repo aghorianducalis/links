@@ -15,14 +15,13 @@ class SourceSeeder extends Seeder
     public function run()
     {
         $names = [
-            'chrome', // tabs
-            'android', // tabs
             'chrome bookmarks',
-//            '',
+            'chrome tabs',
+            'android tabs',
         ];
 
         foreach ($names as $name) {
-            $source = Source::create([
+            $source = Source::query()->firstOrCreate([
                 'name' => $name,
             ]);
         }
