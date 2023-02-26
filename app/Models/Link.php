@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $url
@@ -42,5 +43,15 @@ class Link extends Model
     public function sources()
     {
         return $this->belongsToMany(Source::class, 'link_source', 'link_id', 'source_id');
+    }
+
+    /**
+     * The parse result objects that are related to the link.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function parseResults(): HasMany
+    {
+        return $this->hasMany(ParseResult::class);
     }
 }
