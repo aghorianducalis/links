@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $link_id
- * @property int $status
  * @property $parsed_at
+ * @property int $status
+ * @property string $content
+ * @property string $error_message
+ * @property string $title
+ * @property string $icon
  */
 class ParseResult extends Model
 {
@@ -19,8 +23,12 @@ class ParseResult extends Model
 
     protected $fillable = [
         'link_id',
-        'status',
         'parsed_at',
+        'status',
+        'content',
+        'error_message',
+        'title',
+        'icon',
     ];
 
     /**

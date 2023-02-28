@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $url
- * @property string $title
- * @property string $icon
  * @property $added_at
  */
 class Link extends Model
@@ -20,8 +18,6 @@ class Link extends Model
 
     protected $fillable = [
         'url',
-        'title',
-        'icon',
         'added_at',
     ];
 
