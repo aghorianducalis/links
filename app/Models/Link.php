@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property int $id
  * @property string $url
  * @property $added_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $categories
+ * @property-read \Illuminate\Database\Eloquent\Collection|Source[] $sources
+ * @property-read \Illuminate\Database\Eloquent\Collection|ParseResult[] $parseResults
  */
 class Link extends Model
 {

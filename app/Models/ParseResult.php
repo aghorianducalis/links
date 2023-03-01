@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
+ * @property int $id
  * @property int $link_id
  * @property $parsed_at
  * @property int $status
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $error_message
  * @property string $title
  * @property string $icon
+ * @property-read \Illuminate\Database\Eloquent\Collection|Link[] $links
  */
 class ParseResult extends Model
 {
@@ -39,5 +41,25 @@ class ParseResult extends Model
     public function links(): BelongsTo
     {
         return $this->belongsTo(Link::class);
+    }
+
+    /**
+     * Checks whether there are 2 equal parse results.
+     *
+     * @param ParseResult $first
+     * @param ParseResult $second
+     * @return bool true if there are 2 equal results (represent content) of 2 different ParseResult objects (represent action)
+     */
+    public static function isEqualResults(ParseResult $first, ParseResult $second): bool
+    {
+        $isEqual =
+            ($first->id !== $second->id) &&
+            ($first->status == $second->status) &&
+            ($first->error_message == $second->error_message) &&
+            ($first->title == $second->title) &&
+            ($first->icon == $second->icon) &&
+            ($first->content == $second->content);
+
+        return $isEqual;
     }
 }
