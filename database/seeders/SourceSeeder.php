@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Source;
+use App\Services\Contract\SourceConstants;
 use Illuminate\Database\Seeder;
 
 class SourceSeeder extends Seeder
@@ -14,13 +15,7 @@ class SourceSeeder extends Seeder
      */
     public function run()
     {
-        $names = [
-            'chrome bookmarks',
-            'chrome tabs',
-            'android tabs',
-        ];
-
-        foreach ($names as $name) {
+        foreach (SourceConstants::SOURCES as $name) {
             $source = Source::query()->firstOrCreate([
                 'name' => $name,
             ]);

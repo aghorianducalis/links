@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\ContentType;
+use App\Services\Contract\ContentTypeConstants;
 use Illuminate\Database\Seeder;
 
 class ContentTypeSeeder extends Seeder
@@ -14,16 +15,7 @@ class ContentTypeSeeder extends Seeder
      */
     public function run()
     {
-        $names = [
-            'video',
-            'book',
-            'news',
-            'article',
-            'social network page',
-            'education material',
-        ];
-
-        foreach ($names as $name) {
+        foreach (ContentTypeConstants::CONTENT_TYPES as $name) {
             $source = ContentType::query()->firstOrCreate([
                 'name' => $name,
             ]);
