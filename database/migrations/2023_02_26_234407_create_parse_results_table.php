@@ -28,15 +28,18 @@ class CreateParseResultsTable extends Migration
             $table->text('content')
                 ->nullable()
                 ->charset($charset)
-                ->collation($collation);
+//                ->collation($collation)
+            ;
             $table->text('error_message')
                 ->nullable()
                 ->charset($charset)
-                ->collation($collation);
+//                ->collation($collation)
+            ;
             $table->string('title')
                 ->nullable()
                 ->charset($charset)
-                ->collation($collation);
+//                ->collation($collation)
+            ;
             $table->text('icon')->nullable();
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
