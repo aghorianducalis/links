@@ -17,6 +17,8 @@ class CreateLinksTable extends Migration
             $table->id();
             $table->string('url');
             $table->timestamp('added_at')->nullable();
+            $table->foreignId('content_type_id')->constrained()->on('content_types')->onDelete('restrict');
+            $table->foreignId('domain_id')->constrained()->on('domains')->onDelete('restrict');
             $table->timestamps();
         });
     }

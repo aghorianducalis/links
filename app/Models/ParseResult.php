@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $error_message
  * @property string $title
  * @property string $icon
+ * @property $published_at
  * @property-read \Illuminate\Database\Eloquent\Collection|Link[] $links
  */
 class ParseResult extends Model
@@ -31,6 +32,7 @@ class ParseResult extends Model
         'error_message',
         'title',
         'icon',
+        'published_at',
     ];
 
     /**

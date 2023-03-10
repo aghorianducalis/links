@@ -38,6 +38,7 @@ class CreateParseResultsTable extends Migration
                 ->charset($charset)
                 ->collation($collation);
             $table->text('icon')->nullable();
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
         });
     }
