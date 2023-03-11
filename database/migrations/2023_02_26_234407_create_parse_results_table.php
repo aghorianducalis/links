@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\ParseResultConstants as Constants;
+use App\Services\Contract\ParseResultConstants as Constants;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
