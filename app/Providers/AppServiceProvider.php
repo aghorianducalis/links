@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\BookmarkParserService;
 use App\Services\NetscapeBookmarkParser;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +15,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public $singletons = [
         // services
-        NetscapeBookmarkParser::class => NetscapeBookmarkParser::class,
+        BookmarkParserService::class    => BookmarkParserService::class,
+        NetscapeBookmarkParser::class   => NetscapeBookmarkParser::class,
     ];
 
     /**
