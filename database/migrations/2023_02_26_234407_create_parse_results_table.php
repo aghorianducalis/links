@@ -16,6 +16,9 @@ class CreateParseResultsTable extends Migration
     {
         $charset = "utf8mb4";
         $collation = "utf8mb4_unicode_ci";
+//        $table->engine = "InnoDB";
+//        $table->charset = 'utf8mb4';
+//        $table->collation = 'utf8mb4_unicode_ci';
 
         Schema::create('parse_results', function (Blueprint $table) use ($charset, $collation) {
             $table->id();
