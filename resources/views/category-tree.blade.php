@@ -91,52 +91,25 @@
 
             function initializeCategoryTree(categoryData) {
 
-                // categoryData =
-
-                let categories = {{ Js::from($categories) }};
                 let treeData = [];
 
-                categories.forEach((category) => {
+                categoryData.forEach((category) => {
                     treeData.push({
                         "id": category.id,
                         "parent": category.parent_id ?? "#",
                         "text": "- " + category.name,
                     });
                 });
-                console.log(111);
-                console.log(categories);
-                console.log(treeData);
 
                 $('#jstree_div').jstree({
                     'core' : {
                         'data' : treeData
-                    }
-                });
-                console.log(categoryData);
-                $('#jstree_div').jstree({
-                    'core' : {
-                        'data' : categoryData
                     },
                     // "animation" : 0,
                     // "check_callback" : true,
                     // "themes" : { "stripes" : true },
                     // "plugins" : [ "wholerow", "checkbox" ], // change the theme for instance
                 });
-
-                {{--$('#jstree_div').jstree({--}}
-                {{--    'core' : {--}}
-                {{--        'data' : {--}}
-                {{--            'url' : "{{ route('categories.index') }}",--}}
-                {{--            'data' : function (category) {--}}
-                {{--                return {--}}
-                {{--                    "id": category.id,--}}
-                {{--                    "parent": category.parent_id ?? "#",--}}
-                {{--                    "text": "- " + category.name,--}}
-                {{--                };--}}
-                {{--            }--}}
-                {{--        }--}}
-                {{--    }--}}
-                {{--});--}}
             }
 
             /*
