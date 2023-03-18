@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LinkController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [LinkController::class, 'home'])->name('home');
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/category-tree', [PageController::class, 'categoryTree'])->name('categories');
 
 Route::namespace('links')
     /*->middleware('')*/
@@ -25,4 +28,13 @@ Route::namespace('links')
         Route::get('/', [LinkController::class, 'index'])->name('index');
         Route::post('/', [LinkController::class, 'store'])->name('store');
 //        Route::get('/{id}', [LinkController::class, 'show'])->name('show');
+    });
+
+Route::namespace('categories')
+    /*->middleware('')*/
+    ->name('categories')
+    ->prefix('categories')
+    ->as('categories.')
+    ->group(function () {
+        Route::get('/', [CategoryController::class, 'index'])->name('index');
     });

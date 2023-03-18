@@ -74,7 +74,7 @@
                         <label for="url">Url</label>
                         <input type="url" max="1000" class="form-control" aria-label="Url" id="url" name="url" value="{{ old('url') }}" required>
                         @error('url')
-                        <div class="alert alert-danger">{{ $message }}</div>
+{{--                        <div class="alert alert-danger">{{ $message }}</div>--}}
                         @enderror
                     </div>
 
@@ -82,11 +82,11 @@
                         <label for="category">Category</label>
                         <select name="category_id" id="category" required>
 {{--                            <option value="" selected="selected">+++</option>--}}
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected="selected" @endif>
-                                    {{ $category->name }}
-                                </option>
-                            @endforeach
+{{--                            @foreach ($categories as $category)--}}
+{{--                                <option value="{{ $category->id }}" @if ($category->id == old('category_id')) selected="selected" @endif>--}}
+{{--                                    {{ $category->name }}--}}
+{{--                                </option>--}}
+{{--                            @endforeach--}}
                         </select>
                         @error('category')
                         <div class="alert alert-danger">{{ $message }}</div>

@@ -77,26 +77,76 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
         <script>
+            // changes the theme globally
+            $.jstree.defaults.core.themes.variant = "large";
 
-            let categories = {{ Js::from($categories) }};
-            let treeData = [];
-
-            categories.forEach((category) => {
-                treeData.push({
-                    "id": category.id,
-                    "parent": category.parent_id ?? "#",
-                    "text": "- " + category.name,
-                });
-            });
-            console.log(111);
-            console.log(categories);
-            console.log(treeData);
-
-            $('#jstree_div').jstree({
-                'core' : {
-                    'data' : treeData
+            $.ajax({
+                url: "{{ route('categories.index') }}",
+                type: 'GET',
+                dataType: 'json', // added data type
+                success: function(response) {
+                    initializeCategoryTree(response)
                 }
             });
+
+            function initializeCategoryTree(categoryData) {
+
+                // categoryData =
+
+                let categories = {{ Js::from($categories) }};
+                let treeData = [];
+
+                categories.forEach((category) => {
+                    treeData.push({
+                        "id": category.id,
+                        "parent": category.parent_id ?? "#",
+                        "text": "- " + category.name,
+                    });
+                });
+                console.log(111);
+                console.log(categories);
+                console.log(treeData);
+
+                $('#jstree_div').jstree({
+                    'core' : {
+                        'data' : treeData
+                    }
+                });
+                console.log(categoryData);
+                $('#jstree_div').jstree({
+                    'core' : {
+                        'data' : categoryData
+                    },
+                    // "animation" : 0,
+                    // "check_callback" : true,
+                    // "themes" : { "stripes" : true },
+                    // "plugins" : [ "wholerow", "checkbox" ], // change the theme for instance
+                });
+
+                {{--$('#jstree_div').jstree({--}}
+                {{--    'core' : {--}}
+                {{--        'data' : {--}}
+                {{--            'url' : "{{ route('categories.index') }}",--}}
+                {{--            'data' : function (category) {--}}
+                {{--                return {--}}
+                {{--                    "id": category.id,--}}
+                {{--                    "parent": category.parent_id ?? "#",--}}
+                {{--                    "text": "- " + category.name,--}}
+                {{--                };--}}
+                {{--            }--}}
+                {{--        }--}}
+                {{--    }--}}
+                {{--});--}}
+            }
+
+            /*
+
+            // $('#jstree').jstree(true).select_node('child_node_1');
+            $('#jstree_div').on("changed.jstree", function (e, data) {
+                console.log(data.selected);
+            });
+
+            */
         </script>
 
 {{--        <script type="text/javascript" src="{{ asset('links.js') }}"></script>--}}

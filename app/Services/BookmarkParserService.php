@@ -25,6 +25,12 @@ class BookmarkParserService
         string $fileName // todo object
     ) : array
     {
+//        $fileName = '/home/user/PHPProjects/links/backups/google_chrome_bookmarks/google_chrome_bookmarks_11_3_23.html';
+//        $fileName = '/home/user/PHPProjects/links/backups/google_chrome_bookmarks/google_chrome_bookmarks_3_4_23.html';
+//
+//        //
+//        $parseResults = $parserService->parseGoogleChromeBookmarks($fileName);
+
         // an array of ParseResult objects // todo DTO?
         $result = [];
 

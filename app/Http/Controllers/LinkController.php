@@ -12,16 +12,6 @@ use Illuminate\Http\Request;
 class LinkController extends Controller
 {
     /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function home()
-    {
-        $categories = Category::query()->get();
-
-        return view('welcome', compact('categories'));
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -31,7 +21,7 @@ class LinkController extends Controller
         /** @var \Illuminate\Database\Eloquent\Collection $categories */
         $categories = Category::query()->with(['parent', 'children'])->get();
 
-        return view('tree', compact('categories'));
+        return $categories->toJson();
     }
 
     /**
