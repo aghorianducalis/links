@@ -77,16 +77,17 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
 
         <script>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
             // changes the theme globally
             $.jstree.defaults.core.themes.variant = "large";
 
-            $.ajax({
-                url: "{{ route('categories.index') }}",
-                type: 'GET',
-                dataType: 'json', // added data type
-                success: function(response) {
-                    initializeCategoryTree(response)
-                }
+            getCategories(function(response) {
+                initializeCategoryTree(response)
             });
 
             function initializeCategoryTree(categoryData) {
@@ -103,12 +104,67 @@
 
                 $('#jstree_div').jstree({
                     'core' : {
-                        'data' : treeData
+                        'data' : treeData,
+                        "check_callback" : true, // true to work with the menu action
                     },
                     // "animation" : 0,
-                    // "check_callback" : true,
                     // "themes" : { "stripes" : true },
-                    // "plugins" : [ "wholerow", "checkbox" ], // change the theme for instance
+                    "plugins" : [
+                        // "wholerow",
+                        // "checkbox",
+                        "contextmenu", // to right click nodes and shows a list of configurable actions in a menu
+                        "dnd", // to drag and drop tree nodes and rearrange the tree
+                        "sort", // automatically arranges all sibling nodes according to a comparison config option function, which defaults to alphabetical order
+                        "state", // saves all opened and selected nodes in the user's browser, so when returning to the same tree the previous state will be restored
+                    ], // change the theme for instance
+                }).bind("create_node.jstree", function (e, data) {
+                    let parent_id = data.parent;
+                    let text = data.node.text;
+
+                    // todo make AJAX request to store the newly created node in db
+                    console.log(text, parent_id);
+                }).bind("refresh.jstree", function (e, data) {
+                    // triggers when refresh happens
+                    console.log(e, data);
+                }).bind("select_node.jstree", function (e, data) {
+                    console.log(e, data);
+                }).bind("delete_node.jstree", function (e, data) {
+                    let node_id = data.node.id;
+
+                    deleteCategory(node_id, function(response) {
+                        // todo refresh the tree or some
+                        console.log(response);
+                    });
+                });
+            }
+
+            function getCategories(callbackSuccess)
+            {
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    url: "{{ route('categories.index') }}",
+                    dataType: 'json', // added data type
+
+                    success: callbackSuccess,
+
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status + thrownError);
+                    }
+                });
+            }
+
+            function deleteCategory(category_id, callbackSuccess)
+            {
+                let url = '{{ route('categories.destroy', ':id') }}';
+                url = url.replace(':id', category_id);
+
+                $.ajax({
+                    async: true,
+                    type: 'DELETE',
+                    url: url,
+                    dataType: 'json',
+                    success: callbackSuccess,
                 });
             }
 
