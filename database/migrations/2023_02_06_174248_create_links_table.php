@@ -15,7 +15,7 @@ class CreateLinksTable extends Migration
     {
         Schema::create('links', function (Blueprint $table) {
             $table->id();
-            $table->string('url');
+            $table->string('url')->unique();
             $table->timestamp('added_at')->nullable();
             $table->foreignId('content_type_id')->constrained()->on('content_types')->onDelete('restrict');
             $table->foreignId('domain_id')->constrained()->on('domains')->onDelete('restrict');

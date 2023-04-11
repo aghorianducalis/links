@@ -29,9 +29,6 @@
                 background-color: aliceblue;
             }
         </style>
-
-{{--      js tree css  --}}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
     </head>
     <body class="antialiased">
         <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
@@ -51,15 +48,77 @@
 
             <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div class="py-1 w-100">
-                    Link tree
+                    Category edit
                 </div>
 
-                <div class="py-1 w-100">
-                    <div id="jstree_div" class="">
+                @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif
 
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                @php /** @var \App\Models\Category $category */ @endphp
+                <form method="POST" action="{{ route('categories.update', ['id' => $category->id]) }}" class="p-3">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" max="1000" class="form-control" aria-label="Title" id="title" name="title"
+                               value="{{ old('title') ?? $category->title }}" required>
+                        @error('title')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="text" max="1000" class="form-control" aria-label="Description" id="description" name="description"
+                               value="{{ old('description') ?? $category->description }}" required>
+                        @error('description')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-outline-primary" id="button">Save</button>
+
+                </form>
+
+                <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
+                    <div class="text-center text-sm text-gray-500 sm:text-left">
+                        <div class="flex items-center">
+                            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="-mt-px w-5 h-5 text-gray-400">
+                                <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+
+                            <a href="https://laravel.bigcartel.com" class="ml-1 underline">
+                                Shop
+                            </a>
+
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" class="ml-4 -mt-px w-5 h-5 text-gray-400">
+                                <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+
+                            <a href="https://github.com/aghorianducalis" class="ml-1 underline">
+                                Author
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                        Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
                     </div>
                 </div>
-
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.6.3.js"
@@ -72,113 +131,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                 crossorigin="anonymous"></script>
-
-{{--       js tree --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
-
-        <script>
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // changes the theme globally
-            $.jstree.defaults.core.themes.variant = "large";
-
-            getCategories(function(response) {
-                initializeCategoryTree(response)
-            });
-
-            function initializeCategoryTree(categoryData) {
-
-                let treeData = [];
-
-                categoryData.forEach((category) => {
-                    treeData.push({
-                        "id": category.id,
-                        "parent": category.parent_id ?? "#",
-                        "text": "- " + category.name,
-                    });
-                });
-
-                $('#jstree_div').jstree({
-                    'core' : {
-                        'data' : treeData,
-                        "check_callback" : true, // true to work with the menu action
-                    },
-                    // "animation" : 0,
-                    // "themes" : { "stripes" : true },
-                    "plugins" : [
-                        // "wholerow",
-                        // "checkbox",
-                        "contextmenu", // to right-click nodes and shows a list of configurable actions in a menu
-                        "dnd", // to drag and drop tree nodes and rearrange the tree
-                        "sort", // automatically arranges all sibling nodes according to a comparison config option function, which defaults to alphabetical order
-                        "state", // saves all opened and selected nodes in the user's browser, so when returning to the same tree the previous state will be restored
-                    ], // change the theme for instance
-                }).bind("create_node.jstree", function (e, data) {
-                    let parent_id = data.parent;
-                    let text = data.node.text;
-                    let position = data.position;
-
-                    // todo make AJAX request to store the newly created node in db
-                    console.log(text, parent_id, position, e, data);
-                }).bind("refresh.jstree", function (e, data) {
-                    // triggers when refresh happens
-                    console.log(e, data);
-                }).bind("select_node.jstree", function (e, data) {
-                    console.log(e, data);
-                }).bind("delete_node.jstree", function (e, data) {
-                    let node_id = data.node.id;
-
-                    deleteCategory(node_id, function(response) {
-                        // todo refresh the tree or some
-                        console.log(response);
-                    });
-                });
-            }
-
-            function getCategories(callbackSuccess)
-            {
-                $.ajax({
-                    async: true,
-                    type: 'GET',
-                    url: "{{ route('categories.index') }}",
-                    dataType: 'json',
-
-                    success: callbackSuccess,
-
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        alert(xhr.status + thrownError);
-                    }
-                });
-            }
-
-            function deleteCategory(category_id, callbackSuccess)
-            {
-                let url = '{{ route('categories.destroy', ':id') }}';
-                url = url.replace(':id', category_id);
-
-                $.ajax({
-                    async: true,
-                    type: 'DELETE',
-                    url: url,
-                    dataType: 'json',
-                    success: callbackSuccess,
-                });
-            }
-
-            /*
-
-            // $('#jstree').jstree(true).select_node('child_node_1');
-            $('#jstree_div').on("changed.jstree", function (e, data) {
-                console.log(data.selected);
-            });
-
-            */
-        </script>
-
-{{--        <script type="text/javascript" src="{{ asset('links.js') }}"></script>--}}
     </body>
 </html>

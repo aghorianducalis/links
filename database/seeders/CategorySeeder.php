@@ -15,11 +15,12 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        foreach (CategoryConstants::CATEGORIES as $name) {
+        foreach (CategoryConstants::CATEGORIES as $title) {
             $category = Category::query()
-                ->where('name', 'like', "%$name%")
+                ->where('title', 'like', "%$title%")
                 ->firstOrCreate([
-                    'name' => $name,
+                    'title'         => $title,
+                    'description'   => '',
                 ]);
         }
     }

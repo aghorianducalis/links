@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property ?int $parent_id
- * @property string $name
+ * @property string $title
+ * @property string $description
  * @property-read \Illuminate\Database\Eloquent\Collection|Link[] $links
  * @property-read ?Category $parent
  * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $children
@@ -20,7 +21,8 @@ class Category extends Model
     protected $table = 'categories';
 
     protected $fillable = [
-        'name',
+        'title',
+        'description',
         'parent_id',
     ];
 
