@@ -85,10 +85,9 @@
 
             // changes the theme globally
             $.jstree.defaults.core.themes.variant = "large";
+            let $jsTree = $('#jstree_div');
 
-            getCategories(function(response) {
-                initializeCategoryTree(response)
-            });
+            getCategories();
 
             function initializeCategoryTree(categoryData) {
 
@@ -98,11 +97,11 @@
                     treeData.push({
                         "id": category.id,
                         "parent": category.parent_id ?? "#",
-                        "text": "- " + category.name,
+                        "text": category.id + " - " + category.title,
                     });
                 });
 
-                $('#jstree_div').jstree({
+                $jsTree.jstree({
                     'core' : {
                         'data' : treeData,
                         "check_callback" : true, // true to work with the menu action
@@ -132,14 +131,11 @@
                 }).bind("delete_node.jstree", function (e, data) {
                     let node_id = data.node.id;
 
-                    deleteCategory(node_id, function(response) {
-                        // todo refresh the tree or some
-                        console.log(response);
-                    });
+                    deleteCategory(node_id);
                 });
             }
 
-            function getCategories(callbackSuccess)
+            function getCategories()
             {
                 $.ajax({
                     async: true,
@@ -147,7 +143,9 @@
                     url: "{{ route('categories.index') }}",
                     dataType: 'json',
 
-                    success: callbackSuccess,
+                    success: function(response) {
+                        initializeCategoryTree(response)
+                    },
 
                     error: function (xhr, ajaxOptions, thrownError) {
                         alert(xhr.status + thrownError);
@@ -155,7 +153,7 @@
                 });
             }
 
-            function deleteCategory(category_id, callbackSuccess)
+            function deleteCategory(category_id)
             {
                 let url = '{{ route('categories.destroy', ':id') }}';
                 url = url.replace(':id', category_id);
@@ -165,7 +163,17 @@
                     type: 'DELETE',
                     url: url,
                     dataType: 'json',
-                    success: callbackSuccess,
+                    success: function(response) {
+                        if (response === true) {
+                            // category deleted
+                            alert('Success! Category has been deleted.');
+                            // refresh the tree
+                            // $jsTree.jstree("refresh");
+                        } else {
+                            // category can not be deleted
+                            alert('Fail! Category has attached links, so it can not be deleted.');
+                        }
+                    },
                 });
             }
 

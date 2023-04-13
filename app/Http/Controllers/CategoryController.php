@@ -20,8 +20,8 @@ class CategoryController extends Controller
         /** @var \Illuminate\Database\Eloquent\Collection $categories */
         $categories = Category::query()->with(['parent', 'children'])->get();
 
-        return view('temp.category-list', compact('categories'));
-//        return $categories->toJson();
+//        return view('temp.category-list', compact('categories'));
+        return $categories->toJson();
     }
 
     /**
@@ -99,7 +99,7 @@ class CategoryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(int $id)
     {
@@ -113,6 +113,6 @@ class CategoryController extends Controller
             $result = $category->delete();
         }
 
-        return $result;
+        return response()->json($result);
     }
 }
