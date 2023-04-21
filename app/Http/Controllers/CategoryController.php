@@ -13,25 +13,14 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         /** @var \Illuminate\Database\Eloquent\Collection $categories */
         $categories = Category::query()->with(['parent', 'children'])->get();
 
-//        return view('temp.category-list', compact('categories'));
-        return $categories->toJson();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('temp.category-create');
+        return response()->json($categories);
     }
 
     /**
@@ -45,22 +34,7 @@ class CategoryController extends Controller
         /** @var Category $category */
         $category = Category::query()->create($request->validated());
 
-        return back()->withInput()->with('status', 'Category created!');
-        return response($category, Response::HTTP_CREATED);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Category $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(int $id)
-    {
-        /** @var Category $category */
-        $category = Category::query()->findOrFail($id);
-
-        return view('temp.category-edit', compact('category'));
+        return response()->json($category, Response::HTTP_CREATED);
     }
 
     /**
@@ -68,14 +42,14 @@ class CategoryController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(Request $request, int $id)
     {
         /** @var Category $category */
         $category = Category::query()->findOrFail($id);
 
-        return $category->toJson(); // todo json response resource
+        return response()->json($category);
     }
 
     /**
@@ -83,7 +57,7 @@ class CategoryController extends Controller
      *
      * @param  \App\Http\Requests\UpdateCategoryRequest  $request
      * @param  int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateCategoryRequest $request, int $id)
     {
@@ -92,7 +66,7 @@ class CategoryController extends Controller
 
         $result = $category->update($request->validated());
 
-        return $result; // todo json response
+        return response()->json($result);
     }
 
     /**

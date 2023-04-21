@@ -117,12 +117,24 @@
                         "state", // saves all opened and selected nodes in the user's browser, so when returning to the same tree the previous state will be restored
                     ], // change the theme for instance
                 }).bind("create_node.jstree", function (e, data) {
-                    let parent_id = data.parent;
-                    let text = data.node.text;
-                    let position = data.position;
+                    // let parent_id = data.parent;
+                    // let text = data.node.text;
+                    // let position = data.position;
+                }).bind("rename_node.jstree", function (e, data) {
+                    // bind the rename_node.jstree event to get the new node text
+                    let new_category_name = data.text;
+                    let node = data.node;
+                    let parent_id = node.parent;
 
-                    // todo make AJAX request to store the newly created node in db
-                    console.log(text, parent_id, position, e, data);
+                    let categoryData = {
+                        'title' : new_category_name,
+                        'description' : new_category_name,
+                    };
+
+                    // if id is not int -- then new category??
+                    console.log(111, new_category_name, parent_id);
+                    // make AJAX request to store the newly created node in db
+                    createCategory(categoryData)
                 }).bind("refresh.jstree", function (e, data) {
                     // triggers when refresh happens
                     console.log(e, data);
@@ -145,6 +157,26 @@
 
                     success: function(response) {
                         initializeCategoryTree(response)
+                    },
+
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert(xhr.status + thrownError);
+                    }
+                });
+            }
+
+            function createCategory(categoryData)
+            {
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    url: "{{ route('categories.store') }}",
+                    data: categoryData,
+                    dataType: 'json',
+
+                    success: function(response) {
+                        console.log(response);
+                        // initializeCategoryTree(response)
                     },
 
                     error: function (xhr, ajaxOptions, thrownError) {
