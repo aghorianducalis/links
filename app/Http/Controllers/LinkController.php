@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLinkRequest;
-use App\Models\Category;
 use App\Models\Link;
-use App\Services\BookmarkParserService;
-use App\Services\NetscapeBookmarkParser;
 use Illuminate\Http\Request;
 
 class LinkController extends Controller
@@ -14,14 +11,14 @@ class LinkController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(BookmarkParserService $parserService)
+    public function index()
     {
-        /** @var \Illuminate\Database\Eloquent\Collection $categories */
-        $categories = Category::query()->with(['parent', 'children'])->get();
+        /** @var \Illuminate\Database\Eloquent\Collection $links */
+        $links = Link::query()->get();
 
-        return $categories->toJson();
+        return response()->json($links);
     }
 
     /**

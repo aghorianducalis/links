@@ -13,9 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CategorySeeder::class);
-        $this->call(SourceSeeder::class);
-        $this->call(ContentTypeSeeder::class);
-        // \App\Models\User::factory(10)->create();
+        if (app()->isProduction()) {
+            //
+        } else {
+            $this->call([
+                CategorySeeder::class,
+                SourceSeeder::class,
+                ContentTypeSeeder::class,
+            ]);
+        }
     }
 }

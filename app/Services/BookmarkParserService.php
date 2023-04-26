@@ -2,15 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\ParseResult;
+use App\Models\DTO\LinkDTO;
 
+/**
+ * Class wrapper of netscape bookmark parser (chrome bookmarks).
+ */
 class BookmarkParserService
 {
     /** @var NetscapeBookmarkParser $netscapeParser */
-    protected $netscapeParser;
+    protected NetscapeBookmarkParser $netscapeParser;
 
     public function __construct(
-        /*protected */NetscapeBookmarkParser $parser
+        protected NetscapeBookmarkParser $parser
     )
     {
         $this->netscapeParser = $parser;
@@ -18,42 +21,24 @@ class BookmarkParserService
 
     /**
      * todo handle exceptions
-     * @param string $fileName
-     * @return array|ParseResult[]
+     * @param string $filePath
+     * @return array|\App\Models\ParseResult[]
      */
     public function parseGoogleChromeBookmarks(
-        string $fileName // todo object
+        string $filePath
     ) : array
     {
-//        $fileName = '/home/user/PHPProjects/links/backups/google_chrome_bookmarks/google_chrome_bookmarks_11_3_23.html';
-//        $fileName = '/home/user/PHPProjects/links/backups/google_chrome_bookmarks/google_chrome_bookmarks_3_4_23.html';
-//
-//        //
-//        $parseResults = $parserService->parseGoogleChromeBookmarks($fileName);
-
-        // an array of ParseResult objects // todo DTO?
+        // an array of ParseResult objects
         $result = [];
 
         // read the file
-        $content = $this->netscapeParser->parseFile($fileName);
+        $content = $this->netscapeParser->parseFile($filePath);
 
         // get info for each item (parsed bookmark) & pass it to ParseResult object
-        foreach ($content as $bookmark) {
-            $uri = $bookmark['uri'];
-            $title = $bookmark['title'];
-            $added_at = $bookmark['time'];
-            $tags = $bookmark['tags'];
-            $icon = $bookmark['icon'];
+        foreach ($content as $bookmarkLinkData) {
+            $linkDTO = new LinkDTO($bookmarkLinkData);
 
-            $parseResult = new ParseResult([
-                'uri'   => $uri,
-                'title' => $title,
-                'time'  => $added_at,
-                'tags'  => $tags,
-                'icon'  => $icon
-            ]);
-
-            $result[] = $parseResult;
+            $result[] = $linkDTO;
         }
 
         return $result;

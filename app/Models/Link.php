@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int $content_type_id
  * @property int $domain_id
  * @property string $url
+ * @property string $title
+ * @property string $icon
  * @property $added_at
  * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $categories
  * @property-read \Illuminate\Database\Eloquent\Collection|Source[] $sources
@@ -27,6 +29,8 @@ class Link extends Model
 
     protected $fillable = [
         'url',
+        'title',
+        'icon',
         'added_at',
         'content_type_id',
         'domain_id',
