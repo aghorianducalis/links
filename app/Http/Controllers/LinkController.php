@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLinkRequest;
+use App\Jobs\ExtractDomain;
 use App\Models\Link;
 use Illuminate\Http\Request;
 
@@ -43,9 +44,10 @@ class LinkController extends Controller
         $link = Link::create($request->validated());
         $link->categories()->sync([$request->category_id]);
 
+        // create the job
+        ExtractDomain::dispatch($link);
+
         return back()->withInput()->with('status', 'Link created!');
-//        return to_route('route.name', ['id' => $link->id]);
-//        return redirect()->route('route.name', [$link])->with('status', 'Link created!');
     }
 
     /**
