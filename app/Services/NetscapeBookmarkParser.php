@@ -8,29 +8,6 @@ namespace App\Services;
  */
 class NetscapeBookmarkParser
 {
-    private function example_use()
-    {
-        $parser = new NetscapeBookmarkParser();
-
-        // file name
-        $fileName = '/backups/bookmarks_2_20_23.html';
-
-        // read the file
-        $content = $parser->parseFile($fileName);
-
-        /*
-         * Get the link info
-         */
-
-        foreach ($content as $bookmark) {
-            $uri = $bookmark['uri'];
-            $title = $bookmark['title'];
-            $added_at = $bookmark['time'];
-            $tags = $bookmark['tags'];
-            $icon = $bookmark['icon'];
-        }
-    }
-
     protected $keepNestedTags;
     protected $defaultTags;
     protected $defaultPub;
