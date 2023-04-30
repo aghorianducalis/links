@@ -32,7 +32,6 @@ class ExtractDomain implements ShouldQueue
      */
     public function handle()
     {
-        // add a comment
 //        $this->link->domain()->associate(1);
 //        $this->link->save();
     }
