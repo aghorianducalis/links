@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\PageController;
+use App\Services\BookmarkParserService;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,16 @@ Route::namespace('links')
     ->as('links.')
     ->group(function () {
         Route::get('/', [LinkController::class, 'index'])->name('index');
+        Route::get('/parse-bookmarks', function (BookmarkParserService $parserService) {
+
+            $link = \App\Models\Link::query()->find(2);
+
+            // create the job
+            \App\Jobs\ExtractDomain::dispatch($link);
+            return 123;
+
+        })->name('parse-bookmarks');
+
         Route::post('/', [LinkController::class, 'store'])->name('store');
 //        Route::get('/{id}', [LinkController::class, 'show'])->name('show');
     });

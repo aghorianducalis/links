@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLinkRequest;
-use App\Models\Category;
+use App\Jobs\ExtractDomain;
 use App\Models\Link;
-use App\Services\BookmarkParserService;
-use App\Services\NetscapeBookmarkParser;
 use Illuminate\Http\Request;
 
 class LinkController extends Controller
@@ -14,14 +12,14 @@ class LinkController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function index(BookmarkParserService $parserService)
+    public function index()
     {
-        /** @var \Illuminate\Database\Eloquent\Collection $categories */
-        $categories = Category::query()->with(['parent', 'children'])->get();
+        /** @var \Illuminate\Database\Eloquent\Collection $links */
+        $links = Link::query()->get();
 
-        return $categories->toJson();
+        return response()->json($links);
     }
 
     /**
@@ -46,9 +44,10 @@ class LinkController extends Controller
         $link = Link::create($request->validated());
         $link->categories()->sync([$request->category_id]);
 
+        // create the job
+        ExtractDomain::dispatch($link);
+
         return back()->withInput()->with('status', 'Link created!');
-//        return to_route('route.name', ['id' => $link->id]);
-//        return redirect()->route('route.name', [$link])->with('status', 'Link created!');
     }
 
     /**
