@@ -28,11 +28,6 @@ Route::namespace('links')
     ->group(function () {
         Route::get('/', [LinkController::class, 'index'])->name('index');
         Route::get('/parse-bookmarks', function (BookmarkParserService $parserService) {
-
-            $link = \App\Models\Link::query()->find(2);
-
-            // create the job
-            \App\Jobs\ExtractDomain::dispatch($link);
             return 123;
 
         })->name('parse-bookmarks');
